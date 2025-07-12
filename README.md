@@ -1,4 +1,76 @@
-# 🚀 Introdução ao GitHub Actions
+# 📱 Todo List App
+
+Este repositório é baseado na aplicação oficial [todo-csharp-sql](https://github.com/Azure-Samples/todo-csharp-sql) da Microsoft. A aplicação demonstra uma API REST simples para gerenciamento de tarefas ("todos"), desenvolvida com ASP.NET Core e utilizando SQL Server como base de dados e React no Front-end.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/web.png"/>
+</div>
+
+## 🧩 Arquitetura Original do Todo List App
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/resources-with-apim.png"/>
+</div>
+
+## 🎯 Objetivo
+
+O objetivo principal deste repositório é **criar uma estrutura profissional de CI/CD utilizando GitHub Actions**, aplicando boas práticas de automação para projetos .NET.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/ci-cd.png"/>
+</div>
+
+## 🧪 Projeto de Integração Contínua (CI)
+Executada automaticamente a cada `push` ou `pull request` na branch principal (`main`):
+
+**1. Versionamento**
+  - Atualiza automaticamente a versão do projeto com base em tags.
+
+**2. Build da Aplicação**
+  - Compila a solução com dotnet build para garantir que o código não tenha erros de compilação.
+
+**3. Execução de Testes**
+  - Lint
+  - Testes Unitários
+  - Testes de Integração
+  - SCA (Análise de Composição de Software)
+  - SAST (Teste de Segurança Estáticos)
+
+**4. Packing**
+- Empacota a aplicação em um ou mais pacotes `.nupkg` ou prepara os artefatos com `dotnet pack`.
+
+**5. Publicação de Artefatos**
+  - O build é ser empacotado e salvo como artefato.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/ci.png"/>
+</div>
+
+## 🚀 Projeto de Entrega Contínua (CD)
+Executada automaticamente a cada geração de release e faz o deploy em ambientes de staging ou produção.
+
+**1. Deploy em Homologação**
+  - Automatiza o deploy para um ambiente de testes após o merge na branch principal.
+  - Testes e2e
+  - Testes de Performance
+  - DAST (Teste de Segurança Dinâmicos)
+
+**2. Deploy em Produção**
+  - Após a validação e aprovação, o projeto poderá ser publicado automaticamente em ambientes de produção nas principais nuvens:
+    - Google Cloud Platform (GCP)
+    - Microsoft Azure
+    - Amazon Web Services (AWS).
+
+**3. Notificações (Opcional)**
+  - Integra com ferramentas de comunicação (Slack, Teams, e-mail) para notificar falhas ou sucessos no pipeline.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/cd.png"/>
+</div>
+
+---
+
+# 🛠️ Introdução ao GitHub Actions
 
 O GitHub Actions é uma poderosa funcionalidade do GitHub que permite automatizar workflows de CI/CD (Integração Contínua / Entrega Contínua) diretamente dentro do seu repositório.
 
@@ -16,7 +88,7 @@ GitHub Actions é um sistema de automação baseado em eventos, usado para:
 - Rodar scripts de verificação, lint, segurança, etc.
 - Integrar com serviços externos (Docker Hub, Azure, AWS, etc.)
 
-## ⚙️ Como funciona?
+## 🔗 Como funciona?
 Você define workflows como arquivos YAML no diretório:
 ```bash
 .github/workflows/
@@ -244,3 +316,5 @@ banco:
 | Esquecer dois pontos                   | Cada chave deve ter `:` após o nome |
 | Não manter indentação                  | Indente corretamente os blocos      |
 | Tipar sem aspas valores com `:` ou `#` | Use aspas para strings especiais    |
+
+--- 
