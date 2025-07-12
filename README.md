@@ -65,7 +65,7 @@ Executada automaticamente a cada geração de release e faz o deploy em ambiente
   - Integra com ferramentas de comunicação (Slack, Teams, e-mail) para notificar falhas ou sucessos no pipeline.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/cd.png"/>
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/cd-2.png"/>
 </div>
 
 ---
