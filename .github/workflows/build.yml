@@ -33,7 +33,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: ./src/Todo.Api/web
+        working-directory: ./src/web
         run: |
           npm install
           npm run build
