@@ -316,5 +316,3 @@ banco:
 | Esquecer dois pontos                   | Cada chave deve ter `:` após o nome |
 | Não manter indentação                  | Indente corretamente os blocos      |
 | Tipar sem aspas valores com `:` ou `#` | Use aspas para strings especiais    |
-
---- 
