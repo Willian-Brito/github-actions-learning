@@ -2,7 +2,9 @@
 
 O GitHub Actions é uma poderosa funcionalidade do GitHub que permite automatizar workflows de CI/CD (Integração Contínua / Entrega Contínua) diretamente dentro do seu repositório.
 
-[IMAGEM]
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/inicio.png"/>
+</div>
 
 ## 📌 O que é ?
 
@@ -30,7 +32,9 @@ Cada workflow é ativado por gatilhos, como:
 
 ## 🧩 Componentes do GitHub Actions
 
-[IMAGEM]
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/componentes-github-actions.png"/>
+</div>
 
 ### 🔀 1. Workflow
 É um **processo de automação configurável**, é o **arquivo principal de automação**, escrito em **YAML**, que define quando e o que deve ser executado.
