@@ -37,10 +37,10 @@ Executada automaticamente a cada `push` ou `pull request` na branch principal (`
   - SAST (Teste de Segurança Estáticos)
 
 **4. Packing**
-- Empacota a aplicação em um ou mais pacotes `.nupkg` ou prepara os artefatos com `dotnet pack`.
+  - Empacota a aplicação em um ou mais pacotes `.nupkg` ou prepara os artefatos com `dotnet pack`.
 
 **5. Publicação de Artefatos**
-  - O build é ser empacotado e salvo como artefato.
+  - Salva os artefatos gerados (binários, pacotes, builds, etc.) no GitHub ou outro sistema de armazenamento.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/github-actions-learning/refs/heads/main/assets/ci.png"/>
