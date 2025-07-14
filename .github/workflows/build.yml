@@ -10,6 +10,23 @@ on:
   workflow_dispatch:
 
 jobs:
+
+  versionamento:
+    runs-on: ubuntu-latest
+    name: Versionamento
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0 
+      
+      - uses:  codacy/git-version@2.8.0
+        with:
+          release-branch: main
+          prefix: v
+
   build:
     runs-on: ubuntu-latest
     name: Build Project
