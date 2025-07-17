@@ -1,4 +1,4 @@
-name: Build Project
+name: Continuous Integration
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
           release-branch: main
           prefix: v
 
-      - name: Tag do repositorio
+      - name: Repository Tag
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
