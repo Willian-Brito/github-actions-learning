@@ -56,8 +56,8 @@ jobs:
           cache-dependency-path: ./src/**/packages.lock.json
       
       - name: Restore
-          run: |
-            dotnet restore ./src/Todo.Api.sln
+        run: |
+          dotnet restore ./src/Todo.Api.sln
 
       - name: Build and Test
         run: |          
