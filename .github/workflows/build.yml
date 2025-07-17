@@ -59,10 +59,9 @@ jobs:
         run: |
           dotnet restore ./src/Todo.Api.sln
 
-      - name: Build and Test
+      - name: Build
         run: |          
-          dotnet build --no-restore ./src/Todo.Api.sln
-          dotnet test ./src/Todo.Api.sln --no-restore --no-build --logger trx --results-directory "TestResults"
+          dotnet build --no-restore --configuration Release ./src/Todo.Api.sln          
       
       - name: Test
         run: |                    
