@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 as Base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS Base
 
 # Copy application files
 COPY ./src/api ./src

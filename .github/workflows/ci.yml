@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Versioning
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -76,6 +79,17 @@ jobs:
           name: dotnet-test-results
           path: TestResults  
 
+      - name: Publish
+        run: dotnet publish ./src/Todo.Api.csproj --no-restore --no-build --configuration Release --output ./publish
+        if: github.ref == 'refs/heads/main'
+
+      - name: Upload API Artifacts        
+        uses: actions/upload-artifact@v4
+        with:
+          name: api
+          path: ./publish
+        if: github.ref == 'refs/heads/main'
+
   backend-lint:
     needs: versioning
     runs-on: ubuntu-latest
@@ -127,6 +141,12 @@ jobs:
       - name: Build
         run: |
           npm run build
+  
+      - name: Upload Frontend Artifacts        
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: ./src/web/dist
 
   frontend-lint:
     needs: versioning
@@ -221,3 +241,37 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
     if: github.ref != 'refs/heads/main'
+
+  build-docker-image:
+    needs: [versioning, backend-build-and-test, frontend-build-and-test]
+    runs-on: ubuntu-latest
+    name: Build Docker Image
+
+    env:
+      version: ${{needs.versioning.outputs.version}}
+
+    steps:      
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: app
+          merge-multiple: false
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}/todo-app:${{ env.version }} .
+      
+      - name: Tag Docker Image as Latest
+        run: |
+          docker tag ${{ vars.DOCKERHUB_REPOSITORY }}/todo-app:${{ env.version }} ${{ vars.DOCKERHUB_REPOSITORY }}/todo-app:latest
+        if: github.ref == 'refs/heads/main'
+
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Run Docker push
+        run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/todo-app
