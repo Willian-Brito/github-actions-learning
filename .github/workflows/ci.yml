@@ -194,24 +194,24 @@ jobs:
     needs: versioning
     runs-on: ubuntu-latest
     name: SAST - Static Application Security Testing
-    permissions:
-      contents: read
-      security-events: write
+    container:
+      image: semgrep/semgrep
       
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add Security Code Scan Action
-        uses: security-code-scan/security-code-scan-add-action@v1
-        # prepara a análise SCS durante o build :contentReference[oaicite:6]{index=6}
-
-      - name: Convert SCS results to SARIF
-        uses: security-code-scan/security-code-scan-results-action@v1
-        # converte os resultados gerados no build em SARIF :contentReference[oaicite:7]{index=7}
-
-      - name: Upload SARIF to GitHub Security Dashboard
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Semgrep scan C# + JS (SARIF)
+        run: |
+          semgrep scan \
+          --config p/csharp \
+          --config p/javascript \
+          --sarif \
+          --sarif-output semgrep-results.sarif
+          
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          sarif_file: security-code-scan.sarif
+          name: semgrep-scan-sarif
+          path: semgrep-results.sarif
   
