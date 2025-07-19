@@ -81,6 +81,14 @@ public class ListsRepository
         await _db.SaveChangesAsync();
     }
 
+    public async Task<List<TodoList>> GetListByRawSql(string listName)
+    {
+        return await _db.Lists
+            // .FromSqlRaw("SELECT * FROM Lists WHERE Name = {0}", listName)
+            .FromSqlRaw($"SELECT * FROM Lists WHERE Name = '{listName}'")
+            .ToListAsync();
+    }
+
     private async Task<List<T>> ToListAsync<T>(IQueryable<T> queryable, int? skip, int? batchSize)
     {
         if (skip != null)
