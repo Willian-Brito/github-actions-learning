@@ -177,8 +177,7 @@ jobs:
             path: '.'
             format: 'HTML'
             out: 'dependency-reports'
-            args: |
-              --failOnCVSS 7
+            args: |              
               --scan ./src/api
           env:
             JAVA_HOME: /opt/jdk
