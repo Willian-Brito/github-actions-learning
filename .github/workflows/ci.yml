@@ -190,7 +190,7 @@ jobs:
             path: dependency-reports/
   
   sast:
-    needs: backend-build-and-test
+    needs: versioning
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -204,7 +204,7 @@ jobs:
         include:          
           - name: Backend
           - language: csharp
-            build-mode: none          
+            build-mode: autobuild          
           - name: Frontend
           - language: javascript-typescript
             build-mode: none
