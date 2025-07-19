@@ -80,7 +80,7 @@ jobs:
           path: TestResults  
 
       - name: Publish
-        run: dotnet publish ./src/Todo.Api.csproj --no-restore --no-build --configuration Release --output ./publish
+        run: dotnet publish ./src/api/Todo.Api.csproj --no-restore --no-build --configuration Release --output ./publish
         if: github.ref == 'refs/heads/main'
 
       - name: Upload API Artifacts        
@@ -189,7 +189,7 @@ jobs:
             distribution: 'temurin'
             java-version: '17'
 
-        - name: Run OWASP Dependency‑Check
+        - name: Run OWASP Dependency-Check
           
           uses: dependency-check/Dependency-Check_Action@main
           id: depcheck
