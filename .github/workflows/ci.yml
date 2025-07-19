@@ -198,15 +198,14 @@ jobs:
       actions: read
       contents: read
     
-    strategy:
-      fail-fast: false
+    strategy:      
       matrix:
         include:          
           - name: Backend
           - language: csharp
             build-mode: autobuild          
           - name: Frontend
-          - language: javascript-typescript
+          - language: javascript
             build-mode: none
 
     steps:
