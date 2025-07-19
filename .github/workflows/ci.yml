@@ -192,40 +192,15 @@ jobs:
   sast:
     needs: versioning
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      packages: read
-      actions: read
-      contents: read
-    
-    strategy:      
-      matrix:
-        include:          
-          - name: Backend
-          - language: csharp
-            build-mode: manual
-          - name: Frontend
-          - language: javascript
-            build-mode: none
-
+    container:
+      image: semgrep/semgrep
+      
     steps:
       - uses: actions/checkout@v4
 
-      - uses: github/codeql-action/init@v3   
-        name: Initialize CodeQL - ${{ matrix.name }}     
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix['build-mode'] }}
-      
-      - name: Build .NET solution for C#
-        if: matrix.language == 'csharp'
-        run: |
-          dotnet restore
-          dotnet build --configuration Release \
-            /p:UseSharedCompilation=false \
-            /p:EmitCompilerGeneratedFiles=true
+      - name: Semgrep - C#
+        run: semgrep scan --config p/csharp
 
-      - uses: github/codeql-action/analyze@v3   
-        name: Analyze CodeQL - ${{ matrix.name }}     
-        with:
-          category: '/language:${{ matrix.language }}'
+      - name: Semgrep - JavaScript
+        run: semgrep scan --config p/javascript
+  
