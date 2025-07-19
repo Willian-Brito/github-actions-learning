@@ -72,6 +72,27 @@ jobs:
           name: dotnet-test-results
           path: TestResults  
 
+  backend-lint:
+    needs: backend-build-and-test
+    runs-on: ubuntu-latest
+    name: Backend Lint
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+
+      - uses: super-linter/super-linter@v8
+        env:
+          DEFAULT_BRANCH: "main"
+          VALIDATE_ALL_CODEBASE: "false"
+          VALIDATE_YAML: "true"
+          VALIDATE_CSHARP: "true"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   frontend-build-and-test:
     needs: versioning
     runs-on: ubuntu-latest
@@ -102,3 +123,30 @@ jobs:
       - name: Build
         run: |
           npm run build
+
+  frontend-lint:
+    needs: frontend-build-and-test
+    runs-on: ubuntu-latest
+    name: Frontend Lint
+    defaults:
+      run:
+        working-directory: ./src/web
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: ./src/web
+
+      - name: Install dependencies        
+        run: |
+          npm ci
+      
+      - name: Lint        
+        run: |
+          npm run lint
