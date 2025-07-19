@@ -190,7 +190,7 @@ jobs:
             path: dependency-reports/
   
   sast:
-    needs: versioning
+    needs: backend-build-and-test
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -216,15 +216,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-      
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.x'
-  
-      - name: Build the solution
-        run: dotnet restore && dotnet build --configuration Release
-
+          
       - uses: github/codeql-action/analyze@v3   
         name: Analyze CodeQL - ${{ matrix.name }}     
         with:
