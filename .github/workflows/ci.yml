@@ -192,7 +192,7 @@ jobs:
   
   sast:
     needs: versioning
-    name: Analyze (${{ matrix.language }})
+    name: SAST - (${{ matrix.language }})
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
