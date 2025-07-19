@@ -159,11 +159,31 @@ jobs:
     needs: versioning
     runs-on: ubuntu-latest
     steps:
-      
-        - uses: actions/checkout@v4
-      
-        - uses: actions/dependency-review-action@v4
+        - name: Checkout Code
+          uses: actions/checkout@v4
+        
+        - name: Setup Java (required for Dependency-Check)
+          uses: actions/setup-java@v3
           with:
-            comment-summary-in-pr: always
-            base-ref: main
-            head-ref: main
+            distribution: 'temurin'
+            java-version: '17'
+
+        - name: Run OWASP Dependency‑Check
+          uses: dependency-check/Dependency-Check_Action@main
+          id: depcheck
+          with:
+            project: '${{ github.repository }}'
+            path: '.'
+            format: 'HTML'
+            out: 'dependency-reports'
+            args: |
+              --failOnCVSS 7
+              --scan ./src/api
+          env:
+            JAVA_HOME: /opt/jdk
+
+        - name: Upload vulnerability report
+          uses: actions/upload-artifact@v3
+          with:
+            name: dependency-check-report
+            path: dependency-reports/
