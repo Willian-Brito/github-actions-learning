@@ -203,7 +203,7 @@ jobs:
         include:          
           - name: Backend
           - language: csharp
-            build-mode: autobuild          
+            build-mode: none
           - name: Frontend
           - language: javascript
             build-mode: none
