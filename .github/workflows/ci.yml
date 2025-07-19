@@ -183,12 +183,8 @@ jobs:
           env:
             JAVA_HOME: /opt/jdk
 
-        - name: List generated report files
-          run: |
-            echo "📁 Conteúdo de dependency-reports:"
-            ls -R dependency-reports || echo "📂 Pasta não encontrada ou vazia!"
-
         - name: Upload vulnerability report
+          if: always()
           uses: actions/upload-artifact@v4
           with:
             name: dependency-check-report
