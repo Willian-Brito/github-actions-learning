@@ -190,7 +190,7 @@ jobs:
             path: dependency-reports/
   
   sast:
-    needs: backend-build-and-test
+    needs: versioning
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -203,7 +203,7 @@ jobs:
         include:          
           - name: Backend
           - language: csharp
-            build-mode: none
+            build-mode: manual
           - name: Frontend
           - language: javascript
             build-mode: none
@@ -215,8 +215,14 @@ jobs:
         name: Initialize CodeQL - ${{ matrix.name }}     
         with:
           languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          
+          build-mode: ${{ matrix['build-mode'] }}
+      
+      - name: Build .NET solution
+        if: matrix.language == 'csharp'
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+
       - uses: github/codeql-action/analyze@v3   
         name: Analyze CodeQL - ${{ matrix.name }}     
         with:
