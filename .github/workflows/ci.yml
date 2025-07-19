@@ -158,6 +158,7 @@ jobs:
   sca:
     needs: versioning
     runs-on: ubuntu-latest
+    name: SCA - Software Composition Analysis
     steps:
         - name: Checkout Code
           uses: actions/checkout@v4
@@ -188,3 +189,34 @@ jobs:
           with:
             name: dependency-check-report
             path: dependency-reports/
+  
+  sast:
+    needs: versioning
+    runs-on: ubuntu-latest
+    name: SAST - Static Application Security Testing
+    container:
+      image: semgrep/semgrep
+      
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Semgrep scan C# + JS (SARIF)
+        run: |
+          semgrep scan \
+          --config p/csharp \
+          --config p/javascript \
+          --sarif \
+          --sarif-output semgrep-results.sarif
+          
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-scan-sarif
+          path: semgrep-results.sarif
+
+      - name: Upload SARIF to GitHub Security Dashboard
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep-results.sarif
+  
