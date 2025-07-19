@@ -274,4 +274,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Run Docker push
-        run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/${{ github.repository }}
+        run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/todo-app
