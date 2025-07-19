@@ -81,7 +81,7 @@ public class ListsRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<TodoList> GetListByRawSql(string listName)
+    public async Task<List<TodoList>> GetListByRawSql(string listName)
     {
         return await _db.Lists
             // .FromSqlRaw("SELECT * FROM Lists WHERE Name = {0}", listName)
