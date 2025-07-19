@@ -183,7 +183,8 @@ jobs:
           env:
             JAVA_HOME: /opt/jdk
 
-        - uses: actions/upload-artifact@v4
+        - name: Upload vulnerability report
+          uses: actions/upload-artifact@v4
           with:
             name: dependency-check-report
             path: dependency-reports/
