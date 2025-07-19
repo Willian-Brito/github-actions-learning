@@ -198,9 +198,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Semgrep - C#
-        run: semgrep scan --config p/csharp
+      - name: Semgrep scan C# + JS (SARIF)
+        run: semgrep scan \
+          --config p/csharp \
+          --config p/javascript \
+          --sarif=semgrep-results.sarif
 
-      - name: Semgrep - JavaScript
-        run: semgrep scan --config p/javascript
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-scan-sarif
+          path: semgrep-results.sarif
+
+      - name: Upload SARIF to GitHub Security Dashboard
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep-results.sarif
   
