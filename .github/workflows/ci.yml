@@ -217,11 +217,13 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix['build-mode'] }}
       
-      - name: Build .NET solution
+      - name: Build .NET solution for C#
         if: matrix.language == 'csharp'
         run: |
           dotnet restore
-          dotnet build --configuration Release
+          dotnet build --configuration Release \
+            /p:UseSharedCompilation=false \
+            /p:EmitCompilerGeneratedFiles=true
 
       - uses: github/codeql-action/analyze@v3   
         name: Analyze CodeQL - ${{ matrix.name }}     
