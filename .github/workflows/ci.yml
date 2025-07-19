@@ -190,7 +190,7 @@ jobs:
             path: dependency-reports/
   
   sast:
-    needs: versioning
+    needs: backend-build-and-test
     runs-on: ubuntu-latest
     permissions:
       security-events: write
