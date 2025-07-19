@@ -154,3 +154,13 @@ jobs:
       - name: Lint        
         run: |
           npm run lint
+
+  sca:
+    needs: versioning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run SCA
+        uses: actions/dependency-review-action@v4
