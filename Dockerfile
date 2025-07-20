@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS Base
 
 # Copy application files
-COPY ./src/api ./src
-COPY ./src/web ./src/wwwroot
+COPY ./src/api ./app
+COPY ./src/web ./app/wwwroot
 
 # Set working directory
-WORKDIR /src
+WORKDIR /app
 EXPOSE 8080
 
 # Run the app
