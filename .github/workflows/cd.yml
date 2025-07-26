@@ -43,7 +43,10 @@ jobs:
             id-token: write
             contents: read
             deployments: write
-        environment: staging
+        strategy:            
+            matrix:
+                environment: [staging, production]
+        environment: ${{ matrix.environment }}
 
         steps:          
         - uses: google-github-actions/auth@v2
