@@ -64,7 +64,33 @@ jobs:
 
         - name: Test the Deployment
           run: |
-            echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}"/index.html"
+            echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}/index.html"
             curl -I --fail "${{ steps.deploy-to-cloud-run.outputs.url }}/index.html"
 
-        
+    deploy-to-microsoft-azure:
+        name: Deploy to Microsoft Azure
+        needs: versioning
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
+            deployments: write
+        strategy:            
+            matrix:
+                environment: [staging, production]
+        environment: ${{ matrix.environment }}
+
+        steps:
+          - name: Deploy Docker to Azure
+            id: deploy-to-azure
+            uses: azure/webapps-deploy@v3
+            with:
+                app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+                resource-group-name: ${{ vars.AZURE_RESOURCE_GROUP }}                
+                publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+                images: ${{ needs.versioning.outputs.docker-container-registry }}
+
+          - name: Test the Deployment
+            run: |
+                echo "::notice:: ${{ steps.deploy-to-webapp.outputs.url }}/index.html"
+                curl -I --fail "${{ steps.deploy-to-webapp.outputs.url }}/index.html"
