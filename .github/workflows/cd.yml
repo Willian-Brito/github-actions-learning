@@ -20,17 +20,20 @@ jobs:
             with:
                 name: version
                 path: ./
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                run-id: ${{ github.event.workflow_run.id }}
         
           - name: Get version from file
             id: get-version
             run: |
                 VALUE=$(cat ./version.txt)
-                echo "::set-output name=version::$VALUE"
+                echo "::notice:: $VALUE"
+                echo "version=${VALUE}" >> "$GITHUB_OUTPUT"
 
           - name: Generate docker image regjistry
             id: docker-image-registry
             run: |
-                echo "::set-output name=docker-container-registry::${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}/todo-app:${{ steps.get-version.outputs.version }}"                
+                echo "::set-output name=docker-container-registry::${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.get-version.outputs.version }}" >> "$GITHUB_OUTPUT"
 
     deploy-to-google-cloud:
         name: Deploy to Google Cloud
@@ -47,10 +50,18 @@ jobs:
           with:
             credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
             project_id: ${{ vars.GCP_PROJECT_ID }}
+
         - uses: google-github-actions/deploy-cloudrun@v2
+          id: deploy-to-cloud-run
           with:
             project_id: ${{ vars.GCP_PROJECT_ID }}
             service: ${{ vars.GCP_RUN_SERVICE }}
             image: ${{ needs.versioning.outputs.docker-container-registry }}
+            region: ${{ vars.GCP_RUN_REGION }}
+
+        - name: Test the Deployment
+          run: |
+            echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}"/index.html"
+            curl -I --fail "${{ steps.deploy-to-cloud-run.outputs.url }}/index.html"
 
         
