@@ -7,8 +7,34 @@ on:
       - completed
 
 jobs:
+
+    versioning:
+        name: Versioning
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.get-version.outputs.version }}
+            docker-container-registry: ${{ steps.docker-image-registry.outputs.docker-container-registry }}
+
+        steps:
+          - uses: actions/download-artifact@v4
+            with:
+                name: version
+                path: ./
+        
+          - name: Get version from file
+            id: get-version
+            run: |
+                VALUE=$(cat ./version.txt)
+                echo "::set-output name=version::$VALUE"
+
+          - name: Generate docker image regjistry
+            id: docker-image-registry
+            run: |
+                echo "::set-output name=docker-container-registry::${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}/todo-app:${{ steps.get-version.outputs.version }}"                
+
     deploy-to-google-cloud:
         name: Deploy to Google Cloud
+        needs: versioning
         runs-on: ubuntu-latest
         permissions:
             id-token: write
@@ -21,3 +47,10 @@ jobs:
           with:
             credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
             project_id: ${{ vars.GCP_PROJECT_ID }}
+        - uses: google-github-actions/deploy-cloudrun@v2
+          with:
+            project_id: ${{ vars.GCP_PROJECT_ID }}
+            service: ${{ vars.GCP_RUN_SERVICE }}
+            image: ${{ needs.versioning.outputs.docker-container-registry }}
+
+        
