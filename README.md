@@ -1,6 +1,5 @@
-[![Continuous Integration](https://github.com/Willian-Brito/github-actions-learning/actions/workflows/ci.yml/badge.svg)](https://github.com/Willian-Brito/github-actions-learning/actions/workflows/ci.yml)
-
 # 📱 Todo List App
+[![Continuous Integration](https://github.com/Willian-Brito/github-actions-learning/actions/workflows/ci.yml/badge.svg)](https://github.com/Willian-Brito/github-actions-learning/actions/workflows/ci.yml)
 
 Este repositório é baseado na aplicação oficial [todo-csharp-sql](https://github.com/Azure-Samples/todo-csharp-sql) da Microsoft. A aplicação demonstra uma API REST simples para gerenciamento de tarefas ("todos"), desenvolvida com ASP.NET Core e utilizando SQL Server como base de dados e React no Front-end.
 
